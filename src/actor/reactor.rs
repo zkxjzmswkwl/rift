@@ -288,10 +288,7 @@ pub enum ReactorCommand {
     CloseWindow {
         window_server_id: Option<WindowServerId>,
     },
-    MoveWindowToDisplay {
-        selector: DisplaySelector,
-        window_id: Option<u32>,
-    },
+    MoveWindowToDisplay(DisplaySelector),
 }
 
 #[derive(Default, Debug, Clone)]
@@ -850,12 +847,9 @@ impl Reactor {
             Event::Command(Command::Reactor(ReactorCommand::FocusDisplay(selector))) => {
                 CommandEventHandler::handle_command_reactor_focus_display(self, &selector);
             }
-            Event::Command(Command::Reactor(ReactorCommand::MoveWindowToDisplay {
-                selector,
-                window_id,
-            })) => {
+            Event::Command(Command::Reactor(ReactorCommand::MoveWindowToDisplay(selector))) => {
                 CommandEventHandler::handle_command_reactor_move_window_to_display(
-                    self, &selector, window_id,
+                    self, &selector, None,  // (carter): this shit was fucked, just use focus window perma.
                 );
             }
             Event::Command(Command::Reactor(ReactorCommand::CloseWindow { window_server_id })) => {

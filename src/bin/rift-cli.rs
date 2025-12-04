@@ -710,12 +710,11 @@ fn map_display_command(cmd: DisplayCommands) -> Result<RiftCommand, String> {
             direction,
             index,
             uuid,
-            window_id,
+            window_id: _,  // (carter): don't fkn care
         } => Ok(RiftCommand::Reactor(reactor::Command::Reactor(
-            reactor::ReactorCommand::MoveWindowToDisplay {
-                selector: build_display_selector(direction, index, uuid)?,
-                window_id,
-            },
+            reactor::ReactorCommand::MoveWindowToDisplay(
+                build_display_selector(direction, index, uuid)?,
+            ),
         ))),
     }
 }
